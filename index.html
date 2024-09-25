@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>text.</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: black;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #title {
+            background-color: #111;
+            border: none;
+            outline: none;
+            padding: 10px 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #editor {
+            flex: 1;
+            background-color: #000;
+            border: none;
+            outline: none;
+           font-weight: bold;
+            padding: 20px;
+            color: white;
+            font-size: 18px;
+            width: 100%;
+            height: calc(100vh - 120px); /* Adjust for title and button */
+            box-sizing: border-box;
+            resize: none;
+        }
+
+        #share-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #2e2e2e;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        #share-btn:hover {
+            background-color: #777;
+        }
+
+        #share-btn img {
+            width: 24px;
+            height: 24px;
+filter: invert(60%);
+        }
+
+        /* Mobile screen adjustments */
+        @media only screen and (max-width: 600px) {
+            #title {
+                font-size: 20px;
+            }
+            #editor {
+                font-size: 16px;
+                height: calc(100vh - 100px);
+            }
+            #share-btn {
+                width: 50px;
+                height: 50px;
+            }
+            #share-btn img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="title" placeholder="Títol">
+    <textarea id="editor" placeholder="Text"></textarea>
+
+    <button id="share-btn">
+        <img src="https://github.com/cescps/text/blob/main/share.png?raw=true" alt="Share Icon">
+
+    </button>
+
+    <script>
+        const shareButton = document.getElementById('share-btn');
+        const editor = document.getElementById('editor');
+        const title = document.getElementById('title');
+
+        shareButton.addEventListener('click', () => {
+            // Selecciona tot el text de l'editor
+            editor.select();
+
+            // Text a compartir (només el text de l'editor)
+            const textToShare = editor.value;
+
+            // Verifica si el navegador suporta la API de Web Share
+            if (navigator.share) {
+                navigator.share({
+                    title: title.value || 'Sense títol',  // Si no hi ha títol, posa 'Sense títol'
+                    text: textToShare,
+                }).then(() => {
+                    console.log('Text compartit amb èxit');
+                }).catch((error) => {
+                    console.error('Error en compartir:', error);
+                });
+            } else {
+                alert('La compartició no està suportada en aquest dispositiu.');
+            }
+        });
+    </script>
+
+</body>
+</html>
